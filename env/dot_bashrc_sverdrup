@@ -1,0 +1,128 @@
+#!/bin/bash
+
+#####################################################################
+# ****Set Terminal****
+#####################################################################
+export TERM=xterm-256color
+
+PS1="\[\e[0;32m\]┌──(\
+\[\e[0;35m\]\u\
+\[\e[0;32m\]@\
+\[\e[0;33m\]\h\
+\[\e[0;32m\])-[\
+\[\e[0;36m\]\w\
+\[\e[0;32m\]]\n\
+\[\e[0;32m\]└─\
+\[\e[1;35m\]\$ \
+\[\e[0m\]"
+
+#####################################################################
+# ****Directories****
+#####################################################################
+export HOME=/home/tshahriar
+export SCRATCH=/scratch/tshahriar
+export SCRATCH2=/scratch2/tshahriar
+
+#####################################################################
+# ****For MITgcm ****
+#####################################################################
+export CVSROOT=':pserver:cvsanon@mitgcm.org:/u/gcmpack'
+export CVSEDITOR=vim
+## MITgcm environment variables
+export MPI_INC_DIR=$MPI_DIR/include
+
+#####################################################################
+# ****Set Some Environment Variables for SICOPOLIS and Tapenade****
+#####################################################################
+export TAPENADE_HOME="$HOME/tools_and_software/tapenade_3.16"
+export PATH="$PATH:$TAPENADE_HOME/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/tools_and_software/lis-2.1.6/installation/lib"
+## Necessary to find crti* file when using sico.sh
+export LIBRARY_PATH="/usr/lib64/"
+export LISDIR="$HOME/tools_and_software/lis-2.1.6/installation"
+export NETCDF_FORTRAN_DIR="/opt/ohpc/pub/libs/gnu12/openmpi4/netcdf-fortran/4.6.0"
+
+#####################################################################
+# ****Modules****
+#####################################################################
+module use /share/modulefiles/
+module load java/jdk/16.0.1 # Required by Tapenade
+module load gnu12 # contains gfortran compiler
+module load openmpi4/4.1.5
+module load netcdf-fortran/4.6.0
+module load netcdf/4.9.0
+module load cmake
+module load matlab/r2024a
+module load prun
+
+#####################################################################
+# ****Custom Commands and Alias****
+#####################################################################
+alias squ='squeue -u tshahriar'
+alias cds='cd $SCRATCH/'
+alias cds2='cd $SCRATCH2/'
+alias ..="cd .."
+alias ...="cd ../.."
+alias lr="ls -ltr"
+alias gst="git status"
+## Commands for interactive node and jupyter notebook
+alias interactive='srun -p normal -t 1440 -n 24 --pty /bin/bash -l'
+
+#####################################################################
+# ****Other Important Settings****
+#####################################################################
+
+## Increase stack size
+ulimit -s hard
+ulimit -u hard
+
+## Expand environment variables in tab completion
+shopt -s direxpand
+
+## Group permissions
+umask 027
+
+## git authentication
+git config --global credential.helper "cache --timeout=86400"
+
+#####################################################################
+# ****Other people's directories****
+#####################################################################
+
+## Patrick
+export ph_home=/home/heimbach
+export ph_scratch=/scratch/heimbach
+export ph_scratch2=/scratch2/heimbach
+
+## An
+export an_home=/home/atnguyen
+export an_scratch=/scratch/atnguyen
+export an_scratch2=/scratch2/atnguyen
+
+## Helen
+export hp_home=/home/pillarh
+export hp_scratch=/scratch/pillarh
+export hp_scratch2=/scratch2/pillarh
+
+#####################################################################
+# ****Automatically managed by conda****
+#####################################################################
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/tshahriar/tools_and_software/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/tshahriar/tools_and_software/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/home/tshahriar/tools_and_software/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/tshahriar/tools_and_software/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/home/tshahriar/tools_and_software/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/home/tshahriar/tools_and_software/miniforge3/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
