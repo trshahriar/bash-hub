@@ -65,6 +65,7 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias lr="ls -ltr"
 alias gst="git status"
+alias gcm="git commit -m"
 ## Commands for interactive node and jupyter notebook
 alias interactive='srun -p normal -t 1440 -n 24 --pty /bin/bash -l'
 
